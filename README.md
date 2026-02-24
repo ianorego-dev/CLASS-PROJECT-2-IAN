@@ -8,10 +8,3 @@ Student No: 225259
 - Concrete classes: Patient, Doctor, Nurse, Appointment, Billing
 - Main class: HospitalMain
 
-## How to run
-```bash
-javac *.java
-java HospitalMain
-```
-
-
