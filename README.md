@@ -14,7 +14,4 @@ javac *.java
 java HospitalMain
 ```
 
-## GitHub submission
-1. Create a GitHub repository (example: OOP-Activity2-HospitalSystem)
-2. Upload all files from this folder
-3. Submit the repository link
+
