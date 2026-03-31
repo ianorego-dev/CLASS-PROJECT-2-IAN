@@ -50,6 +50,15 @@ public class HospitalMain {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        HospitalStore store = new HospitalStore();
+
+        try {
+            store.loadPatients("patients.csv");
+            store.loadDoctors("doctors.csv");
+            store.loadAppointments("appointments.csv");
+        } catch (Exception e) {
+            System.out.println("Could not load data: " + e.getMessage());
+        }
 
         try {
             System.out.println("=== Hospital Management System ===");
@@ -60,6 +69,7 @@ public class HospitalMain {
             String pId = readNonEmpty(sc, "Patient ID: ");
             String illness = readNonEmpty(sc, "Illness: ");
             Patient patient = new Patient(pName, pAge, pGender, pId, illness);
+            store.addPatient(patient);
 
             String dName = readNonEmpty(sc, "\nDoctor name: ");
             int dAge = readIntRange(sc, "Doctor age (18-100): ", 18, 100);
@@ -67,6 +77,7 @@ public class HospitalMain {
             String dStaffId = readNonEmpty(sc, "Doctor staff ID: ");
             String spec = readNonEmpty(sc, "Specialization: ");
             Doctor doctor = new Doctor(dName, dAge, dGender, dStaffId, spec);
+            store.addDoctor(doctor);
 
             String nName = readNonEmpty(sc, "\nNurse name: ");
             int nAge = readIntRange(sc, "Nurse age (18-100): ", 18, 100);
@@ -79,14 +90,13 @@ public class HospitalMain {
             patient.displayInfo();
             doctor.displayInfo();
             nurse.displayInfo();
-
             doctor.performDuties();
             nurse.performDuties();
 
             String apptId = readNonEmpty(sc, "\nAppointment ID: ");
             String date = readNonEmpty(sc, "Appointment date (e.g., 26 Feb 2026): ");
             Appointment appt = new Appointment(apptId, date, patient, doctor);
-
+            store.addAppointment(appt);
             doctor.scheduleAppointment(appt);
             appt.displayDetails();
 
@@ -102,9 +112,16 @@ public class HospitalMain {
 
             if (paidAmount >= amountDue) {
                 bill.markAsPaid();
+            } else {
+                System.out.println("Partial payment. Remaining: KES " + (amountDue - paidAmount));
             }
 
             bill.generateBill();
+
+            store.savePatients("patients.csv");
+            store.saveDoctors("doctors.csv");
+            store.saveAppointments("appointments.csv");
+            System.out.println("Data saved.");
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -114,4 +131,3 @@ public class HospitalMain {
         }
     }
 }
-
